@@ -1,0 +1,91 @@
+openapi: 3.0.0
+info:
+  title: QR Code Generator API
+  description: API for generating and downloading QR codes based on user input.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /generate-qr:
+    post:
+      summary: Generate a QR code
+      description: Generates a QR code from the provided data and returns the filename.
+      operationId: generateQRCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+                  format: uri
+                  description: The data to encode in the QR code (must be a valid URL).
+              required:
+                - data
+      responses:
+        '200':
+          description: QR code generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: QR code generated successfully
+                  filename:
+                    type: string
+                    example: 20250129042000.png
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Data is required"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Failed to generate QR code"
+
+  /download-qr/{filename}:
+    get:
+      summary: Download a QR code image
+      description: Downloads the generated QR code image file.
+      operationId: downloadQRCode
+      parameters:
+        - name: filename
+          in: path
+          required: true
+          description: The name of the QR code image file to download.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: QR code image file
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: File not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "File not found"
