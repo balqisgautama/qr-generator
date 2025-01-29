@@ -39,13 +39,13 @@ func (h *QRCodeHandler) GenerateQRCodeHandler(c *gin.Context) {
 	}
 
 	h.serviceQR.SchedulerOn = input.Scheduler
-	filePath, err := h.serviceQR.GenerateQRCode(input.Content)
+	fileName, filePath, err := h.serviceQR.GenerateQRCode(input.Content)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "QR code generated successfully", "file_path": filePath})
+	c.JSON(http.StatusOK, gin.H{"message": "QR code generated successfully", "file_name": fileName, "file_path": filePath})
 }
 
 // DownloadQRCodeHandler handles the GET request to download the QR code image

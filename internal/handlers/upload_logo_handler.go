@@ -27,5 +27,5 @@ func (h *UploadLogoHandler) UploadLogoHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Logo uploaded successfully", "filename": filename, "path": path})
+	c.JSON(http.StatusOK, gin.H{"message": "Logo uploaded successfully", "file_name": filename, "file_path": path})
 }
