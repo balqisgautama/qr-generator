@@ -18,12 +18,15 @@ paths:
             schema:
               type: object
               properties:
-                data:
+                content:
                   type: string
-                  format: uri
                   description: The data to encode in the QR code (must be a valid URL).
+                  example: "https://github.com/balqisgautama/qr-generator"
+                scheduler:
+                  type: boolean
+                  description: Enable scheduler with default time a minute
               required:
-                - data
+                - content
       responses:
         '200':
           description: QR code generated successfully
@@ -35,7 +38,7 @@ paths:
                   message:
                     type: string
                     example: QR code generated successfully
-                  filename:
+                  file_path:
                     type: string
                     example: 20250129042000.png
         '400':
