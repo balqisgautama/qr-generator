@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"sync"
@@ -14,7 +15,7 @@ import (
 type QRCodeService struct {
 	qrCodeDir      string
 	expirationTime time.Duration
-	schedulerOn    bool
+	SchedulerOn    bool
 	mu             sync.Mutex
 }
 
@@ -25,8 +26,8 @@ func NewQRCodeService(qrCodeDir string) (*QRCodeService, error) {
 	}
 	return &QRCodeService{
 		qrCodeDir:      qrCodeDir,
-		expirationTime: 5 * time.Minute, // Default expiration time
-		schedulerOn:    true,            // Default scheduler on
+		expirationTime: 60 * time.Second, // Default expiration time
+		SchedulerOn:    false,            // Default scheduler on
 	}, nil
 }
 
@@ -43,7 +44,7 @@ func (s *QRCodeService) GenerateQRCode(content string) (string, error) {
 	defer s.mu.Unlock()
 
 	filename := fmt.Sprintf("%s.png", time.Now().Format("20060102150405"))
-	filePath := filepath.Join(s.qrCodeDir, filename)
+	filePath := filepath.Join(fmt.Sprintf(`./%s`, s.qrCodeDir), filename)
 
 	err := qrcode.WriteFile(content, qrcode.Medium, 256, filePath)
 	if err != nil {
@@ -51,11 +52,11 @@ func (s *QRCodeService) GenerateQRCode(content string) (string, error) {
 	}
 
 	// Schedule the file to be deleted if the scheduler is enabled
-	if s.schedulerOn {
+	if s.SchedulerOn {
 		go func() {
 			time.Sleep(s.expirationTime)
 			if err := os.Remove(filePath); err != nil {
-				fmt.Printf("Failed to delete QR code file: %v\n", err)
+				log.Printf("Failed to delete QR code file: %v\n", err)
 			}
 		}()
 	}
