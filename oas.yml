@@ -96,8 +96,8 @@ paths:
             schema:
               type: object
               properties:
-                logo:
-                  type: string
+                image:
+                  type: file
                   format: binary
                   description: The logo image file to upload.
       responses:

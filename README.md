@@ -66,8 +66,9 @@ curl -X POST http://localhost:8080/generate-qr -H "Content-Type: application/jso
 **Example Response:**
 ```json
 {
-    "message": "QR code generated successfully",
-    "file_path": "assets/20250129043049.png",
+    "file_name": "20250129142508.png",
+    "file_path": "assets/qr_codes/20250129142508.png",
+    "message": "QR code generated successfully"
 }
 ```
 
@@ -77,6 +78,23 @@ To download a generated QR code image, send a GET request to the `/download-qr/{
 **Example Request:**
 ```bash
 curl -O http://localhost:8080/download-qr/20250129043049.png
+```
+
+### Upload Logo
+To upload a logo, send a POST request to the /upload-logo endpoint with the logo file.
+
+**Example Request:**
+```bash
+curl -X POST http://localhost:8080/upload-logo -H "Content-Type: multipart/form-data" -F "image=@/path/to/logo.png"
+```
+
+**Example Response:**
+```json
+{
+    "file_name": "logo_20250129142541.png",
+    "file_path": "assets/logos/logo_20250129142541.png",
+    "message": "Logo uploaded successfully"
+}
 ```
 
 ## API Endpoints
@@ -101,6 +119,15 @@ curl -O http://localhost:8080/download-qr/20250129043049.png
   - `200 OK`: Returns the QR code image file.
   - `404 Not Found`: The specified file does not exist.
 
+### Upload Logo
+- **Endpoint:** `/upload-logo`
+- **Method:** `POST`
+- **Request Body:** `application/json`
+  - `logo` (file, required): The logo image file to upload.
+- **Responses:**
+  - `200 OK`: Logo uploaded successfully.
+  - `400 Bad Reuqest`: Invalid logo file.
+
 ## Docker Setup
 
 ### Using Docker Compose
@@ -109,7 +136,7 @@ To deploy the QR Code Generator API using Docker, you can use the provided `Dock
 1. **Build and Run the Application**:
    In the root directory of your project, run:
    ```bash
-   make build
+   make run
    ```
 
 2. **Access the API**:
