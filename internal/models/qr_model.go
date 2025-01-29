@@ -6,7 +6,8 @@ import (
 
 // QRCodeInput represents the input data for generating a QR code
 type QRCodeInput struct {
-	Data string `json:"data" validate:"required,url"` // Validate that Data is a required URL
+	Content   string `json:"content" validate:"required"`            // Content to encode in the QR code
+	Scheduler bool   `json:"scheduler" validate:"omitempty,boolean"` // New field to enable/disable scheduler
 }
 
 // Validate function to validate QRCodeInput

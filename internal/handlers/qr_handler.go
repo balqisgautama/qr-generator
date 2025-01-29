@@ -38,7 +38,8 @@ func (h *QRCodeHandler) GenerateQRCodeHandler(c *gin.Context) {
 		return
 	}
 
-	filePath, err := h.serviceQR.GenerateQRCode(input.Data)
+	h.serviceQR.SchedulerOn = input.Scheduler
+	filePath, err := h.serviceQR.GenerateQRCode(input.Content)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

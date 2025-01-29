@@ -30,7 +30,7 @@ The QR Code Generator API is a simple RESTful API built with Go that allows user
 ## Installation
 
 ### Prerequisites
-- Go (version 1.16 or later)
+- Go (version 1.23 or later)
 - Git
 - Docker (for Docker setup)
 
@@ -60,7 +60,7 @@ To generate a QR code, send a POST request to the `/generate-qr` endpoint with a
 
 **Example Request:**
 ```bash
-curl -X POST http://localhost:8080/generate-qr -H "Content-Type: application/json" -d '{"data": "https://example.com"}'
+curl -X POST http://localhost:8080/generate-qr -H "Content-Type: application/json" -d '{"content": "https://github.com balqisgautama/generate-qr", "scheduler": true}'
 ```
 
 **Example Response:**
@@ -85,7 +85,8 @@ curl -O http://localhost:8080/download-qr/20250129043049.png
 - **Endpoint:** `/generate-qr`
 - **Method:** `POST`
 - **Request Body:**
-  - `data` (string, required): The URL to encode in the QR code (must be a valid URL).
+  - `content` (string, required): The data to encode in the QR code.
+  - `scheduler` (boolean, omitempty): Enable/disable scheduler. Default expiration time is a minute.
 - **Responses:**
   - `200 OK`: QR code generated successfully.
   - `400 Bad Request`: Invalid input data.
