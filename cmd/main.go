@@ -10,14 +10,23 @@ import (
 
 func main() {
 	// Initialize QRCodeService
-	qrCodeDir := "./assets"
+	qrCodeDir := "./assets/qr_codes"
 	qrService, err := service.NewQRCodeService(qrCodeDir)
 	if err != nil {
 		log.Fatalf("Failed to initialize QRCodeService: %v\n", err)
 	}
 
+	// Initialize UploadLogoService
+	uploadLogoService, err := service.NewUploadLogoService("./assets/logos")
+	if err != nil {
+		log.Fatalf("Failed to initialize UploadService: %v\n", err)
+	}
+
 	// Initialize QRCodeHandler
 	qrHandler := handler.NewQRCodeHandler(qrService)
+
+	// Initialize UploadLogoHandler
+	uploadHandler := handler.NewUploadLogoHandler(uploadLogoService)
 
 	// Initialize Gin router
 	r := gin.Default()
@@ -27,6 +36,9 @@ func main() {
 
 	// Define the GET endpoint for downloading QR codes
 	r.GET("/download-qr/:filename", qrHandler.DownloadQRCodeHandler)
+
+	// Define the POST endpoint for uploading logos
+	r.POST("/upload-logo", uploadHandler.UploadLogoHandler)
 
 	// Start the server
 	if err := r.Run(":8080"); err != nil {

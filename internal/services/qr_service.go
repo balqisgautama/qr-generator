@@ -39,7 +39,7 @@ func (s *QRCodeService) SetExpiration(duration time.Duration) {
 }
 
 // GenerateQRCode generates a QR code and saves it to a file
-func (s *QRCodeService) GenerateQRCode(content string) (string, error) {
+func (s *QRCodeService) GenerateQRCode(content string) (string, string, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -48,7 +48,7 @@ func (s *QRCodeService) GenerateQRCode(content string) (string, error) {
 
 	err := qrcode.WriteFile(content, qrcode.Medium, 256, filePath)
 	if err != nil {
-		return "", fmt.Errorf("failed to generate QR code: %w", err)
+		return "", "", fmt.Errorf("failed to generate QR code: %w", err)
 	}
 
 	// Schedule the file to be deleted if the scheduler is enabled
@@ -61,7 +61,7 @@ func (s *QRCodeService) GenerateQRCode(content string) (string, error) {
 		}()
 	}
 
-	return filePath, nil
+	return filename, filePath, nil
 }
 
 // GetQRCodeDir returns the directory where QR codes are stored

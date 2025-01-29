@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: QR Code Generator API
   description: API for generating and downloading QR codes based on user input.
-  version: 1.0.0
+  version: 1.2.0
 servers:
   - url: http://localhost:8080
 paths:
@@ -33,14 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: QR code generated successfully
-                  file_path:
-                    type: string
-                    example: 20250129042000.png
+                $ref: '#/components/schemas/ResponseBody'
         '400':
           description: Bad Request
           content:
@@ -92,3 +85,49 @@ paths:
                   error:
                     type: string
                     example: "File not found"
+  /upload-logo:
+    post:
+      summary: Upload a logo
+      operationId: uploadLogo
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                logo:
+                  type: string
+                  format: binary
+                  description: The logo image file to upload.
+      responses:
+        '200':
+          description: Logo uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseBody' 
+        '400':
+          description: Invalid logo file
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid logo file"
+components:  
+  schemas:  
+    ResponseBody:  
+      type: object  
+      properties:  
+        message:
+          type: string
+          example: ... successfully
+        file_path:
+          type: string
+          example: "assets/.../20250129142508.png"
+        file_name:
+          type: string
+          example: "20250129142508.png"
