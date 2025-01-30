@@ -60,7 +60,7 @@ To generate a QR code, send a POST request to the `/generate-qr` endpoint with a
 
 **Example Request:**
 ```bash
-curl -X POST http://localhost:8080/generate-qr -H "Content-Type: application/json" -d '{"content": "https://github.com balqisgautama/generate-qr", "scheduler": true}'
+curl -X POST http://localhost:8080/generate-qr -H "Content-Type: application/json" -d '{"content": "https://github.com/balqisgautama/generate-qr", "is_scheduler_delete_on": true, "is_using_custom_logo": true, "file_name": "qr_20250130135140.png"}'
 ```
 
 **Example Response:**
@@ -105,6 +105,8 @@ curl -X POST http://localhost:8080/upload-logo -H "Content-Type: multipart/form-
 - **Request Body:**
   - `content` (string, required): The data to encode in the QR code.
   - `scheduler` (boolean, omitempty): Enable/disable scheduler. Default expiration time is a minute.
+  - `is_using_custom_logo` (boolean, omitempty): Indicates if a custom logo should be used.
+  - `file_name` (string, omitempty): The file name to the uploaded logo to use if `is_using_custom_logo` is true.
 - **Responses:**
   - `200 OK`: QR code generated successfully.
   - `400 Bad Request`: Invalid input data.

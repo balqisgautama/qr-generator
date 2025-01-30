@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: QR Code Generator API
   description: API for generating and downloading QR codes based on user input.
-  version: 1.2.0
+  version: 1.3.0
 servers:
   - url: http://localhost:8080
 paths:
@@ -25,6 +25,15 @@ paths:
                 scheduler:
                   type: boolean
                   description: Enable scheduler with default time a minute
+              is_using_custom_logo:
+                  type: boolean
+                  description: Indicates if a custom logo should be used.
+                  example: true
+                file_name:
+                  type: string
+                  description: The name of the logo file to use if `is_using_custom_logo` is true.
+                  example: "logo_20250130133940.png"
+                  nullable: true
               required:
                 - content
       responses:

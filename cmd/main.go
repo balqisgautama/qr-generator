@@ -11,13 +11,15 @@ import (
 func main() {
 	// Initialize QRCodeService
 	qrCodeDir := "./assets/qr_codes"
-	qrService, err := service.NewQRCodeService(qrCodeDir)
+	logoDir := "./assets/logos"
+
+	qrService, err := service.NewQRCodeService(qrCodeDir, logoDir)
 	if err != nil {
 		log.Fatalf("Failed to initialize QRCodeService: %v\n", err)
 	}
 
 	// Initialize UploadLogoService
-	uploadLogoService, err := service.NewUploadLogoService("./assets/logos")
+	uploadLogoService, err := service.NewUploadLogoService(logoDir)
 	if err != nil {
 		log.Fatalf("Failed to initialize UploadService: %v\n", err)
 	}
